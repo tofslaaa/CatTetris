@@ -7,7 +7,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    var tetris: Tetris? = null
+    var tetris: TetrisView? = null
     var timer = Timer()
     var gameStarted = false
 
@@ -16,15 +16,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mainContentLayout.post {
-            addGameView()
-
             mainContentLayout.setOnClickListener {
                 if (gameStarted) {
                     stopGameLoop()
                     removeGameView()
                 } else {
-                    startGameLoop()
                     addGameView()
+                    startGameLoop()
                 }
             }
         }
@@ -35,9 +33,9 @@ class MainActivity : AppCompatActivity() {
         stopGameLoop()
     }
 
-    fun addGameView() {
+    private fun addGameView() {
         if (tetris == null) {
-            tetris = Tetris(this)
+            tetris = TetrisView(this)
             mainContentLayout.addView(tetris)
         }
     }
