@@ -3,4 +3,6 @@
     <string name="record">Рекорд</string>
     <string name="lines">Линии</string>
     <string name="start_text">Нажмите на «старт»,\nчтобы начать игру</string>
+    <string name="pause_text">Нажмите на «старт»,\nчтобы продолжить игру</string>
+    <string name="end_text">Игра окончена!\nНажмите «заново»,\nчтобы сыграть еще</string>
 </resources>
