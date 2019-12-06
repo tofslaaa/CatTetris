@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mBlocksAdapter: BlocksAdapter
     lateinit var presenter: Presenter
 
-    private var mPositions: List<Int> = (0..119).map { 0 }.toList()
+    private var mPositions: List<Int> = (0..95).map { 0 }.toList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         mBlocksAdapter = BlocksAdapter(this, mPositions)
 
-        play_field.layoutManager = GridLayoutManager(this, 10)
+        play_field.layoutManager = GridLayoutManager(this, 8)
         play_field.adapter = mBlocksAdapter
 
 

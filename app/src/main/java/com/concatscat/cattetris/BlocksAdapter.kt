@@ -21,9 +21,6 @@ class BlocksAdapter(
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.item_cat, parent, false)
 
-        val height: Int = parent.measuredHeight / 12
-        view.minimumHeight = height
-
         return ViewHolder(view)
     }
 
