@@ -1,32 +1,22 @@
 package com.concatscat.cattetris
 
-import android.graphics.drawable.Drawable
-
 class Presenter(private val view: View) {
 
     fun generateBlocks() {
-        val positions: List<Int> = mutableListOf(
-            0, 0, 0, 0, 1, 0, 0, 0,
-            0, 0, 0, 0, 1, 0, 0, 0,
-            0, 0, 0, 0, 1, 1, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            1, 1, 1, 1, 1, 1, 1, 1
-        )
+        val positions: List<Int> = when ((0..4).random()) {
+            0 -> BlocksGenerator.generateBlocks("L")
+            1 -> BlocksGenerator.generateBlocks("I")
+            2 -> BlocksGenerator.generateBlocks("S")
+            3 -> BlocksGenerator.generateBlocks("O")
+            4 -> BlocksGenerator.generateBlocks("J")
+            else -> BlocksGenerator.generateBlocks("L")
+        }
 
-        view.setAdapter(positions)
+        view.setNewBlock(positions)
     }
 
 
-
-
     interface View {
-        fun setAdapter(positions: List<Int>)
+        fun setNewBlock(positions: List<Int>)
     }
 }

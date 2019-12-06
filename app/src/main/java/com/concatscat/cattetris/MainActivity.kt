@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val view: Presenter.View = object : Presenter.View{
-        override fun setAdapter(positions: List<Int>) {
+        override fun setNewBlock(positions: List<Int>) {
             cat.visibility = View.INVISIBLE
             start_text.visibility = View.INVISIBLE
 

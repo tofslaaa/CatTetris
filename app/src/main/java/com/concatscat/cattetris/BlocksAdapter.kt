@@ -29,10 +29,12 @@ class BlocksAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (positionsList[position] == 1) {
-            holder.cat.setBackgroundResource(R.drawable.cat_orange)
-        } else {
-            holder.cat.setBackgroundResource(R.drawable.cat_transparent)
+        when (positionsList[position]){
+            0 -> holder.cat.setBackgroundResource(R.drawable.cat_transparent)
+            2 -> holder.cat.setBackgroundResource(R.drawable.cat_black)
+            3 -> holder.cat.setBackgroundResource(R.drawable.cat_brown)
+            4 -> holder.cat.setBackgroundResource(R.drawable.cat_white)
+            else -> holder.cat.setBackgroundResource(R.drawable.cat_orange)
         }
     }
 
