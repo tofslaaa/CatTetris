@@ -1,5 +1,7 @@
 package com.concatscat.cattetris
 
+import javax.security.auth.callback.Callback
+
 class Presenter(private val view: View) {
 
     fun generateBlocks() {
