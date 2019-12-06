@@ -2,7 +2,9 @@ package com.concatscat.cattetris
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.lifecycle.Transformations.map
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -17,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     var isGameRun = false
 
-    private var mPositions: List<Int> = (0..95).map { 0 }.toList()
+    private var mPositions: MutableList<Int> = (0..95).map { 0 }.toMutableList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +32,18 @@ class MainActivity : AppCompatActivity() {
         play_field.layoutManager = GridLayoutManager(this, 8)
         play_field.adapter = mBlocksAdapter
 
+        setOnClickListeners()
+    }
 
+    private fun setOnClickListeners() {
         play_button.setOnClickListener {
-            if (isGameRun){
-
+            if (isGameRun) {
+                startTimer()
             } else {
-                presenter.generateBlocks()
+                presenter.generateBlock {
+                    updateCurrentBlockPosition(it)
+                }
+
                 startTimer()
 
                 play_button.visibility = View.INVISIBLE
@@ -44,46 +52,92 @@ class MainActivity : AppCompatActivity() {
                 pause_button.visibility = View.VISIBLE
                 pause_button.isClickable = true
 
+                cat.visibility = View.INVISIBLE
+                start_text.visibility = View.INVISIBLE
+                pause_text.visibility = View.INVISIBLE
+
                 isGameRun = true
             }
         }
 
         pause_button.setOnClickListener {
-                timer?.cancel()
-
+            timer?.cancel()
 
             pause_button.visibility = View.INVISIBLE
             pause_button.isClickable = false
 
             play_button.visibility = View.VISIBLE
             play_button.isClickable = true
+
+            pause_text.visibility = View.VISIBLE
+        }
+
+        replay_button.setOnClickListener {
+            presenter.generateBlock {
+                updateCurrentBlockPosition(it)
+            }
+
+            startTimer()
+
+            play_button.visibility = View.INVISIBLE
+            play_button.isClickable = false
+
+            pause_button.visibility = View.VISIBLE
+            pause_button.isClickable = true
+
+            cat.visibility = View.INVISIBLE
+            start_text.visibility = View.INVISIBLE
+            pause_text.visibility = View.INVISIBLE
+
+            isGameRun = true
         }
     }
 
-    private fun startTimer(){
-        if (timer != null){
+    private fun startTimer() {
+        if (timer != null) {
             timer?.cancel()
         }
 
         timer = Timer()
-        timerTask = MyTimerTask()
+        timerTask = MyTimerTask(this, presenter, mPositions)
 
-        timer?.schedule(timerTask, 0, 500)
+        timer?.schedule(timerTask,0,1000)
     }
 
-    private val view: Presenter.View = object : Presenter.View{
-        override fun setNewBlock(positions: List<Int>) {
-            cat.visibility = View.INVISIBLE
-            start_text.visibility = View.INVISIBLE
+    private fun updateCurrentBlockPosition(positions: MutableList<Int>) {
+        mPositions = positions
+    }
 
-            mBlocksAdapter.setNewList(positions)
+    private val view: Presenter.View = object : Presenter.View {
+        override fun updateBlockPositions(positions: MutableList<Int>) {
+            updateCurrentBlockPosition(positions)
+
+            mBlocksAdapter.setNewList(positions) { isNeedNewBlock ->
+                if (isNeedNewBlock) {
+                    presenter.generateBlock {
+                        updateBlockPositions(mPositions)
+                    }
+                    startTimer()
+                }
+            }
         }
     }
 
-    class MyTimerTask(): TimerTask() {
-
+    class MyTimerTask(
+        private val activity: MainActivity,
+        private val presenter: Presenter,
+        private val positions: MutableList<Int>
+    ) :
+        TimerTask() {
+        var i = 0
         override fun run() {
+            i++
+            Log.d("TIMESSSS", i.toString())
 
+            activity.runOnUiThread {
+                    Log.d("RUNONUI", "oueee")
+                    presenter.updateBlockPosition(positions)
+            }
         }
     }
 }

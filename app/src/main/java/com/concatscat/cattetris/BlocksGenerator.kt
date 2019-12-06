@@ -2,7 +2,7 @@ package com.concatscat.cattetris
 
 object BlocksGenerator {
 
-    fun generateBlocks(type: String): List<Int> {
+    fun generateBlocks(type: String): MutableList<Int> {
         return when (type) {
             "L" -> generateBlockL()
             "I" -> generateBlockI()
@@ -13,7 +13,7 @@ object BlocksGenerator {
         }
     }
 
-    private fun generateBlockL(): List<Int>{
+    private fun generateBlockL(): MutableList<Int>{
         return mutableListOf(
             0, 0, 0, 1, 0, 0, 0, 0,
             0, 0, 0, 1, 0, 0, 0, 0,
@@ -30,7 +30,7 @@ object BlocksGenerator {
         )
     }
 
-    private fun generateBlockI(): List<Int>{
+    private fun generateBlockI(): MutableList<Int>{
         return mutableListOf(
             0, 0, 0, 0, 2, 0, 0, 0,
             0, 0, 0, 0, 2, 0, 0, 0,
@@ -47,7 +47,7 @@ object BlocksGenerator {
         )
     }
 
-    private fun generateBlockS(): List<Int>{
+    private fun generateBlockS(): MutableList<Int>{
         return mutableListOf(
             0, 0, 0, 3, 3, 0, 0, 0,
             0, 0, 0, 0, 3, 3, 0, 0,
@@ -64,7 +64,7 @@ object BlocksGenerator {
         )
     }
 
-    private fun generateBlockO(): List<Int>{
+    private fun generateBlockO(): MutableList<Int>{
         return mutableListOf(
             0, 0, 0, 4, 4, 0, 0, 0,
             0, 0, 0, 4, 4, 0, 0, 0,
@@ -81,7 +81,7 @@ object BlocksGenerator {
         )
     }
 
-    private fun generateBlockJ(): List<Int>{
+    private fun generateBlockJ(): MutableList<Int>{
         return mutableListOf(
             0, 0, 0, 0, 1, 0, 0, 0,
             0, 0, 0, 0, 1, 0, 0, 0,
