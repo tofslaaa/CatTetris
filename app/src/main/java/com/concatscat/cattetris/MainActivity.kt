@@ -112,12 +112,12 @@ class MainActivity : AppCompatActivity() {
     inner class MyTimerTask :
         TimerTask() {
         var i = 0
+
         override fun run() {
             i++
-            Log.d("TIMESSSS", i.toString())
 
             this@MainActivity.runOnUiThread {
-                Log.d("RUNONUI", "oueee")
+                Log.d("TIMESSSS", i.toString())
                 presenter.updateBlockPosition(mPositions, mIsFirstBlockUpdate)
             }
         }

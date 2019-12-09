@@ -28,9 +28,9 @@ class Presenter(private val view: View) {
         val newPositions: MutableList<Int>
 
         if (isFirstBlockUpdate) {
-            newPositions = setNewBlockPosition(positions)
+            newPositions = positions
             lastCurrentBlock.clear()
-        } else newPositions = positions
+        } else newPositions = setNewBlockPosition(positions)
 
         view.updateCurrentBlockPositions(newPositions)
 
@@ -71,7 +71,6 @@ class Presenter(private val view: View) {
             for (i in positions.indices) {
                 if (positions[i] != 0) {
                     newPositions[i + 8] = positions[i]
-
                 }
             }
         } else {
