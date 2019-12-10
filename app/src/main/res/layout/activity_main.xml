@@ -35,7 +35,7 @@
         android:orientation="horizontal"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/start_text"
+        android:id="@+id/splash_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/play"
@@ -49,36 +49,6 @@
         app:layout_constraintRight_toRightOf="@id/play_field"
         app:layout_constraintTop_toTopOf="@id/play_field" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/pause_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/play"
-        android:text="@string/pause_text"
-        android:textAlignment="center"
-        android:textColor="#000"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/cat"
-        app:layout_constraintLeft_toLeftOf="@id/play_field"
-        app:layout_constraintRight_toRightOf="@id/play_field"
-        app:layout_constraintTop_toTopOf="@id/play_field" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/end_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/play"
-        android:text="@string/end_text"
-        android:textAlignment="center"
-        android:textColor="#000"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/cat"
-        app:layout_constraintLeft_toLeftOf="@id/play_field"
-        app:layout_constraintRight_toRightOf="@id/play_field"
-        app:layout_constraintTop_toTopOf="@id/play_field"
-        />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/cat"
