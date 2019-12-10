@@ -55,7 +55,7 @@
         android:layout_width="226dp"
         android:layout_height="156dp"
         android:layout_marginBottom="76dp"
-        android:background="@drawable/cat"
+        android:src="@drawable/cat"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@id/play_field"
         app:layout_constraintLeft_toLeftOf="@id/play_field"
