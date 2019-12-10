@@ -21,7 +21,6 @@ class Control(private val game: Game) {
     fun moveRight() {
         val left = game.figure.left
         val right = game.figure.right
-        game.playField.matrix
         if (left >= 0 && right < game.playField.width) {
             game.figure.coordinates.x += 1
             if (collides()) {

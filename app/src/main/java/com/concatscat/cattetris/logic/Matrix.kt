@@ -2,8 +2,6 @@ package com.concatscat.cattetris.logic
 
 class Matrix(val width: Int, val height: Int = width, initializer: (Int, Int) -> Int = { _, _ -> 0 }) {
 
-    val size = width * height
-
     val array = Array(height) { row -> IntArray(width) { column -> initializer(row, column) } }
 
     operator fun get(row: Int): IntArray = array[row]
