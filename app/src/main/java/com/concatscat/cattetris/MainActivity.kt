@@ -2,110 +2,87 @@ package com.concatscat.cattetris
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var mBlocksAdapter: BlocksAdapter
-    lateinit var presenter: Presenter
-
-    var timer: Timer? = null
-    lateinit var timerTask: MyTimerTask
-
-    var isGameRun = false
-    var mIsFirstBlockUpdate = false
-
-    private var mPositions: MutableList<Int> = (0..95).map { 0 }.toMutableList()
+    lateinit var presenter: MainPresenter
+    lateinit var adapter: BlocksAdapter
+    lateinit var layoutManager: GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter = Presenter(view)
+        presenter = MainPresenter(viewPresenter)
 
-        mBlocksAdapter = BlocksAdapter(mPositions)
-
-        play_field.layoutManager = GridLayoutManager(this, 8)
-        play_field.adapter = mBlocksAdapter
+        play_field.apply {
+            adapter = BlocksAdapter()
+            layoutManager = GridLayoutManager(this@MainActivity, 8)
+            }
 
         setOnClickListeners()
     }
 
     private fun setOnClickListeners() {
-        play_button.setOnClickListener {
-            onPlayButtonClicked()
-        }
-
-        pause_button.setOnClickListener {
-            timer?.cancel()
-
-            pause_button.visibility = View.INVISIBLE
-            pause_button.isClickable = false
-
-            play_button.visibility = View.VISIBLE
-            play_button.isClickable = true
-
-            pause_text.visibility = View.VISIBLE
-        }
-
-        replay_button.setOnClickListener {
-            isGameRun = false
-            onPlayButtonClicked()
-        }
-    }
-
-    private fun onPlayButtonClicked() {
-        if (!isGameRun) {
-            presenter.generateBlock {positions ->
-                mPositions = positions
+        left_button.setOnClickListener { presenter.onLeftClicked() }
+        right_button.setOnClickListener { presenter.onRightClicked() }
+        down_button.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> presenter.onFallStarted().let { true }
+                MotionEvent.ACTION_UP -> presenter.onFallEnded().let { true }
+                else -> false
             }
-            mIsFirstBlockUpdate = true
         }
-        startTimer()
 
-        play_button.visibility = View.INVISIBLE
-        play_button.isClickable = false
+        rotation_button.setOnClickListener { presenter.onRotateClicked() }
 
-        pause_button.visibility = View.VISIBLE
-        pause_button.isClickable = true
-
-        cat.visibility = View.INVISIBLE
-        start_text.visibility = View.INVISIBLE
-        pause_text.visibility = View.INVISIBLE
-
-        isGameRun = true
+        play_button.setOnClickListener { presenter.onStartClicked() }
+        pause_button.setOnClickListener { presenter.onPauseClicked() }
+        replay_button.setOnClickListener { presenter.onRestartClicked() }
     }
 
-    private fun startTimer() {
-        if (timer != null) {
-            timer?.cancel()
+    private val viewPresenter = object : MainPresenter.View {
+
+        override fun updateItems(items: List<BlockModel>) {
+            adapter.updateItems(items)
+            adapter.notifyDataSetChanged()
         }
 
-        timer = Timer()
-        timerTask = MyTimerTask()
-
-        timer?.schedule(timerTask, 1000, 2000)
-    }
-
-    private val view: Presenter.View = object : Presenter.View {
-        override fun generateNewBlock() {
-            presenter.generateBlock {positions ->
-                mPositions = positions
-            }
-            mIsFirstBlockUpdate = true
+        override fun updateSize(width: Int, height: Int) {
+            layoutManager.spanCount = width
+            //game_map.updateSize(width, height)
         }
 
-        override fun updateCurrentBlockPositions(positions: MutableList<Int>) {
-            mPositions = positions
+        override fun showPauseButton(show: Boolean) {
+            pause_button.visibility = if (show) View.VISIBLE else View.GONE
+            play_button.visibility = if (show) View.GONE else View.VISIBLE
         }
 
-        override fun updateGrid(grid: MutableList<Int>) {
-            mIsFirstBlockUpdate = false
-            mBlocksAdapter.setNewList(grid)
+        override fun showCatImage(show: Boolean) {
+            cat.visibility = if (show) View.VISIBLE else View.INVISIBLE
+        }
+
+        override fun showSplashText(show: Boolean) {
+            splash_text.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        override fun updateSplashText(textId: Int) {
+            splash_text.setText(textId)
+        }
+
+        override fun enableControls(enabled: Boolean) {
+            left_button.isEnabled = enabled
+            right_button.isEnabled = enabled
+            down_button.isEnabled = enabled
+            rotation_button.isEnabled = enabled
+        }
+
+        override fun showPauseOverlay(show: Boolean) {
+            play_field.alpha = if (show) 0.2f else 1f
         }
     }
 
