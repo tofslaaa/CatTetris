@@ -34,7 +34,7 @@ class BlocksAdapter :
                 BlockModel.Type.LINE -> R.drawable.cat_black
                 BlockModel.Type.SQUARE -> R.drawable.cat_white
                 BlockModel.Type.SNAKE -> R.drawable.cat_brown
-                else -> R.drawable.cat_transparent
+                BlockModel.Type.STAIRS -> R.drawable.cat_brown
             }
         )
     }
