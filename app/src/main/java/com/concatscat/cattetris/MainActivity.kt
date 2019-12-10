@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -13,18 +14,31 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: BlocksAdapter
     lateinit var layoutManager: GridLayoutManager
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         presenter = MainPresenter(viewPresenter)
 
-        play_field.apply {
-            adapter = BlocksAdapter()
-            layoutManager = GridLayoutManager(this@MainActivity, 8)
-            }
+        adapter = BlocksAdapter()
+        layoutManager = GridLayoutManager(this, 8)
+
+        play_field.adapter = this.adapter
+        play_field.layoutManager = this.layoutManager
 
         setOnClickListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 
     private fun setOnClickListeners() {
@@ -50,11 +64,6 @@ class MainActivity : AppCompatActivity() {
         override fun updateItems(items: List<BlockModel>) {
             adapter.updateItems(items)
             adapter.notifyDataSetChanged()
-        }
-
-        override fun updateSize(width: Int, height: Int) {
-            layoutManager.spanCount = width
-            //game_map.updateSize(width, height)
         }
 
         override fun showPauseButton(show: Boolean) {
