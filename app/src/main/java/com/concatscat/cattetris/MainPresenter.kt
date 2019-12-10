@@ -6,9 +6,10 @@ import com.concatscat.cattetris.logic.Matrix
 class MainPresenter(private val view: View) {
 
     fun onStart() {
-        //view.updateSize(game.territory.width, game.territory.height)
         if (game.isStarted) {
             game.resume()
+            view.showSplashText(false)
+            view.showPauseOverlay(false)
         } else {
             view.enableControls(false)
             view.showCatImage(true)
@@ -26,7 +27,6 @@ class MainPresenter(private val view: View) {
     fun onStartClicked() {
         if (!game.isStarted) {
             game.start()
-            //view.updateSize(game.territory.width, game.territory.height)
         } else {
             game.resume()
             view.showPauseOverlay(false)
@@ -82,6 +82,8 @@ class MainPresenter(private val view: View) {
         }
 
         override fun onPaused() {
+            view.updateSplashText(R.string.pause_text)
+            view.showSplashText(true)
             view.showPauseButton(false)
             view.enableControls(false)
         }
@@ -89,6 +91,7 @@ class MainPresenter(private val view: View) {
         override fun onResumed() {
             view.showPauseButton(true)
             view.enableControls(true)
+            view.showSplashText(false)
         }
 
         override fun onStarted() {
@@ -105,7 +108,6 @@ class MainPresenter(private val view: View) {
 
     interface View {
         fun updateItems(items: List<BlockModel>)
-        fun updateSize(width: Int, height: Int)
         fun showPauseButton(show: Boolean)
         fun showCatImage(show: Boolean)
         fun showPauseOverlay(show: Boolean)
