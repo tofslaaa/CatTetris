@@ -14,7 +14,7 @@ class MainPresenter(private val view: View) {
             view.enableControls(false)
             view.showCatImage(true)
             view.showSplashText(true)
-            view.updateItems((0 until game.territory.size).map { BlockModel(BlockModel.Type.NONE) }.toList())
+            view.updateItems((0 until game.playField.size).map { BlockModel(BlockModel.Type.NONE) }.toList())
         }
     }
 
@@ -26,6 +26,7 @@ class MainPresenter(private val view: View) {
 
     fun onStartClicked() {
         if (!game.isStarted) {
+            view.updateLinesCounter(-1)
             game.start()
         } else {
             game.resume()
@@ -61,10 +62,22 @@ class MainPresenter(private val view: View) {
     }
 
     fun onRestartClicked() {
+        view.updateLinesCounter(-1)
         game.start()
     }
 
+    fun onBackClicked() {
+        if (game.isStarted){
+            game.pause()
+            view.showPauseOverlay(true)
+        }
+    }
+
     private val listener = object : Game.Listener {
+        override fun onFilledLinesRemoved(count: Int) {
+            view.updateLinesCounter(count)
+            view.updateRecord(count)
+        }
 
         override fun onUpdated(matrix: Matrix) {
             val items = matrix.toList().map { block ->
@@ -89,9 +102,9 @@ class MainPresenter(private val view: View) {
         }
 
         override fun onResumed() {
+            view.showSplashText(false)
             view.showPauseButton(true)
             view.enableControls(true)
-            view.showSplashText(false)
         }
 
         override fun onStarted() {
@@ -104,7 +117,7 @@ class MainPresenter(private val view: View) {
 
     }
 
-    val game = Game(listener)
+    private val game = Game(listener)
 
     interface View {
         fun updateItems(items: List<BlockModel>)
@@ -114,5 +127,7 @@ class MainPresenter(private val view: View) {
         fun showSplashText(show: Boolean)
         fun updateSplashText(textId: Int)
         fun enableControls(enabled: Boolean)
+        fun updateLinesCounter(count: Int)
+        fun updateRecord(lines: Int)
     }
 }

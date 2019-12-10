@@ -33,7 +33,7 @@ class PlayField(val width: Int, val height: Int = width, private val listener: L
         listener.onUpdated(merged())
     }
 
-    fun merged() =
+    private fun merged() =
         matrix.clone().apply {
             for ((x, y) in figure.blocksIterator()) {
                 this[x, y] = mapFigureType()
@@ -62,14 +62,17 @@ class PlayField(val width: Int, val height: Int = width, private val listener: L
         }
     }
 
-    fun removeFilledLines() {
+    fun removeFilledLines(): Int {
+        var count = 0
         for (row in matrix.array) {
             if (!row.contains(0)) {
                 for (j in row.indices) {
                     row[j] = 0
                 }
+                count++
             }
         }
+        return count
     }
 
     fun fall() {
@@ -110,7 +113,6 @@ class PlayField(val width: Int, val height: Int = width, private val listener: L
     }
 
     interface Listener {
-
         fun onCollides()
         fun onUpdated(matrix: Matrix)
     }
