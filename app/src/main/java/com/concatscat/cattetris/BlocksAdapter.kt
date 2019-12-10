@@ -39,7 +39,8 @@ class BlocksAdapter(
     }
 
     fun setNewList(list: MutableList<Int>) {
-        grid = list
+        grid.clear()
+        grid.addAll(list)
         notifyDataSetChanged()
     }
 
