@@ -65,7 +65,7 @@ class Game(val listener: Listener) {
         }
     }
 
-    val width = 9
+    val width = 8
     val height = 12
     val territory: PlayField = PlayField(width, height, territoryListener)
 
