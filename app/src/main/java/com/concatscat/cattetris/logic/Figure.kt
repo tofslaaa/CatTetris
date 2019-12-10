@@ -36,7 +36,7 @@ sealed class Figure(var matrix: Matrix, val coordinates: Coordinates = Coordinat
     class GunRight(x: Int, blocksType: Int) :
         Figure(Matrix(3, 2) { row, column -> ((row == 0 && column == 2) || row == 1).toInt(blocksType) }, Coordinates(x, 0))
 
-    fun rotateCcw() {
+    fun rotate() {
         val w = width
         matrix = Matrix(height, width) { row, column ->
             matrix[w - 1 - row, column]

@@ -8,12 +8,12 @@ class Control(private val game: Game) {
     fun moveLeft() {
         val left = game.figure.left
         val right = game.figure.right
-        if (left > 0 && right <= game.territory.width) {
+        if (left > 0 && right <= game.playField.width) {
             game.figure.coordinates.x -= 1
             if (collides()) {
                 game.figure.coordinates.x += 1
             } else {
-                game.territory.update()
+                game.playField.update()
             }
         }
     }
@@ -21,28 +21,28 @@ class Control(private val game: Game) {
     fun moveRight() {
         val left = game.figure.left
         val right = game.figure.right
-        game.territory.matrix
-        if (left >= 0 && right < game.territory.width) {
+        game.playField.matrix
+        if (left >= 0 && right < game.playField.width) {
             game.figure.coordinates.x += 1
             if (collides()) {
                 game.figure.coordinates.x -= 1
             } else {
-                game.territory.update()
+                game.playField.update()
             }
         }
     }
 
     fun rotate() {
         val oldMatrix = game.figure.matrix
-        game.figure.rotateCcw()
+        game.figure.rotate()
         if (collides()) {
             game.figure.matrix = oldMatrix
         } else {
-            game.territory.update()
+            game.playField.update()
         }
     }
 
-    private fun collides() = game.figure.blocksIterator().asSequence().filter { (x, y) -> game.territory.matrix[x, y] != 0 }.any()
+    private fun collides() = game.figure.blocksIterator().asSequence().filter { (x, y) -> game.playField.matrix[x, y] != 0 }.any()
 
     fun fall() {
         game.onTick()

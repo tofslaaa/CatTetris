@@ -13,10 +13,10 @@ class Game(val listener: Listener) {
     fun start() {
         ticker.stop()
         isStarted = true
-        territory.clear()
-        figure = Figure.random(territory.width / 2)
-        territory.figure = figure
-        territory.update()
+        playField.clear()
+        figure = Figure.random(playField.width / 2)
+        playField.figure = figure
+        playField.update()
         ticker.start { onTick() }
         listener.onStarted()
     }
@@ -36,28 +36,28 @@ class Game(val listener: Listener) {
     private fun end() {
         ticker.stop()
         figure = Figure.None
-        territory.figure = figure
+        playField.figure = figure
         isStarted = false
         listener.onGameEnded()
     }
 
     fun onTick() {
-        territory.updateTick()
+        playField.updateTick()
     }
 
-    private val territoryListener = object : PlayField.Listener {
+    private val playFieldListener = object : PlayField.Listener {
         override fun onCollides() {
             control.onCollides()
             if (figure.coordinates.y == 0) {
                 end()
                 return
             }
-            figure = Figure.random(territory.width / 2)
-            territory.figure = figure
-            territory.removeFilledLines()
-            listener.onFilledLinesRemoved()
-            territory.update()
-            territory.fall()
+            figure = Figure.random(playField.width / 2)
+            playField.figure = figure
+            val count = playField.removeFilledLines()
+            listener.onFilledLinesRemoved(count)
+            playField.update()
+            playField.fall()
         }
 
         override fun onUpdated(matrix: Matrix) {
@@ -67,10 +67,10 @@ class Game(val listener: Listener) {
 
     val width = 8
     val height = 12
-    val territory: PlayField = PlayField(width, height, territoryListener)
+    val playField: PlayField = PlayField(width, height, playFieldListener)
 
     interface Listener {
-        fun onFilledLinesRemoved() {}
+        fun onFilledLinesRemoved(count: Int)
         fun onUpdated(matrix: Matrix)
         fun onGameEnded()
         fun onPaused()

@@ -4,7 +4,7 @@ import android.os.Handler
 
 class Ticker(private val interval: Long) {
 
-    val handler = Handler()
+    private val handler = Handler()
     private var onTick: (() -> Unit)? = null
 
     var running = false
