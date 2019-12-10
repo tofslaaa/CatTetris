@@ -51,14 +51,14 @@ class PlayField(val width: Int, val height: Int = width, private val listener: L
 
     private fun mapFigureType(): Int {
         return when (figure) {
-            is Figure.None -> BlockModel.NONE.type
-            is Figure.Line -> BlockModel.LINE.type
-            is Figure.GunLeft -> BlockModel.GUN.type
-            is Figure.GunRight -> BlockModel.GUN.type
-            is Figure.SnakeLeft -> BlockModel.SNAKE.type
-            is Figure.SnakeRight -> BlockModel.SNAKE.type
-            is Figure.Square -> BlockModel.SQUARE.type
-            is Figure.Stairs -> BlockModel.STAIRS.type
+            is Figure.None -> BlockModel.Type.NONE.type
+            is Figure.Line -> BlockModel.Type.LINE.type
+            is Figure.GunLeft -> BlockModel.Type.GUN.type
+            is Figure.GunRight -> BlockModel.Type.GUN.type
+            is Figure.SnakeLeft -> BlockModel.Type.SNAKE.type
+            is Figure.SnakeRight -> BlockModel.Type.SNAKE.type
+            is Figure.Square -> BlockModel.Type.SQUARE.type
+            is Figure.Stairs -> BlockModel.Type.STAIRS.type
         }
     }
 
