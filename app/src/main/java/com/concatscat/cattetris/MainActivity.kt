@@ -159,17 +159,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    inner class MyTimerTask :
-        TimerTask() {
-        var i = 0
 
-        override fun run() {
-            i++
 
-            this@MainActivity.runOnUiThread {
-                Log.d("TIMESSSS", i.toString())
-//                presenter.updateBlockPosition(mPositions, mIsFirstBlockUpdate)
-            }
-        }
-    }
 }
