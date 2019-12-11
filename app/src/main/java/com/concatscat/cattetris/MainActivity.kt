@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
         presenter.onStart()
     }
 
+
+
+
+
     override fun onStop() {
         super.onStop()
         presenter.onStop()
@@ -112,6 +116,7 @@ class MainActivity : AppCompatActivity() {
                 4 -> 1500
                 else -> 0
             }
+
 
             if (record < currentRecord){
                 record = currentRecord
