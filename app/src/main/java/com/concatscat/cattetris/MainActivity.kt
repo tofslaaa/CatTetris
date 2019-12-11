@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun updateRecord(lines: Int) {
             currentRecord += when(lines){
+                -1 -> -currentRecord
                 1 -> 100
                 2 -> 300
                 3 -> 700

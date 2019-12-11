@@ -63,6 +63,7 @@ class MainPresenter(private val view: View) {
 
     fun onRestartClicked() {
         view.updateLinesCounter(-1)
+        view.updateRecord(-1)
         game.start()
     }
 
