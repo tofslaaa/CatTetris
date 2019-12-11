@@ -5,8 +5,6 @@ import com.concatscat.cattetris.BlockModel
 
 class PlayField(val width: Int, val height: Int = width, private val listener: Listener) {
 
-    val TAG = PlayField::class.java.simpleName
-
     val size = width * height
 
     var figure: Figure = Figure.None
@@ -14,10 +12,10 @@ class PlayField(val width: Int, val height: Int = width, private val listener: L
     var matrix = Matrix(width, height)
 
     private var top = height
+    private val bottom = height
 
     fun updateTick() {
-        val collides = collides()
-        if (collides) {
+        if (collides()) {
             mergeFigure()
             update()
             listener.onCollides()
@@ -25,8 +23,6 @@ class PlayField(val width: Int, val height: Int = width, private val listener: L
             figure.coordinates.moveDown()
             update()
         }
-
-        Log.d(TAG, merged().toString())
     }
 
     fun update() {
@@ -35,13 +31,13 @@ class PlayField(val width: Int, val height: Int = width, private val listener: L
 
     private fun merged() =
         matrix.clone().apply {
-            for ((x, y) in figure.blocksIterator()) {
+            for ((x, y) in figure.blocks()) {
                 this[x, y] = mapFigureType()
             }
         }
 
     private fun mergeFigure() {
-        for ((x, y) in figure.blocksIterator()) {
+        for ((x, y) in figure.blocks()) {
             matrix[x, y] = mapFigureType()
         }
         if (figure.top < top) {
@@ -99,12 +95,10 @@ class PlayField(val width: Int, val height: Int = width, private val listener: L
     }
 
     private fun collides() =
-        figure.blocksIterator()
-            .asSequence()
-            .filter { (x, y) ->
-                figure.bottom >= height || matrix[x, y + 1] != 0
+        figure.blocks()
+            .any { (x, y) ->
+                figure.bottom >= bottom || matrix[x, y + 1] != 0
             }
-            .any()
 
     fun clear() {
         figure = Figure.None
