@@ -10,6 +10,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -167,7 +168,7 @@ class MainActivity : AppCompatActivity() {
 
             this@MainActivity.runOnUiThread {
                 Log.d("TIMESSSS", i.toString())
-                presenter.updateBlockPosition(mPositions, mIsFirstBlockUpdate)
+//                presenter.updateBlockPosition(mPositions, mIsFirstBlockUpdate)
             }
         }
     }
